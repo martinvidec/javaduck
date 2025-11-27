@@ -639,12 +639,101 @@ gem 'java_parser' # TBD - zu recherchieren
 
 **Gesamt:** 12-19 Tage (je nach Java-Parser-Verfügbarkeit)
 
+## ✅ Workflow mit GitHub Issues
+
+### Issue-basierte Entwicklung
+
+Alle Tasks wurden als GitHub Issues angelegt für bessere Nachverfolgbarkeit:
+
+**Repository:** https://github.com/martinvidec/javaduck
+**Branch:** `development-java-duck`
+**Issues:** https://github.com/martinvidec/javaduck/issues
+
+### Vollständige Issue-Liste (24 Issues)
+
+#### Phase 1: Grundgerüst für Java-Parsing
+- ✅ **#1** - Java-Parser-Gem recherchieren und auswählen (ABGESCHLOSSEN)
+- ⏳ **#2** - Java-Parser Klasse erstellen
+- ⏳ **#3** - Java-Associator erstellen
+- ⏳ **#4** - Parser Routing erweitern
+
+#### Phase 2: Java-AST-Erkennung
+- ⏳ **#5** - Java::Ast Hauptklasse
+- ⏳ **#6** - Java::Class Detektor
+- ⏳ **#7** - Java::Interface Detektor
+- ⏳ **#8** - Java::Enum Detektor
+- ⏳ **#9** - Java::Method Detektor
+- ⏳ **#10** - Java::Field Detektor
+- ⏳ **#11** - Java::Node Helper
+
+#### Phase 3: Javadoc-Tag-Unterstützung
+- ⏳ **#12** - Doc::Parser Anpassungen prüfen
+- ⏳ **#13** - Javadoc @version Tag
+- ⏳ **#14** - Javadoc @see Tag
+- ⏳ **#15** - @author und @since Tags prüfen
+
+#### Phase 4: Type-System Anpassungen
+- ⏳ **#16** - Java-Types in BaseType registrieren
+- ⏳ **#17** - Type-Linking für Java-Klassen
+
+#### Phase 5: Integration & Testing
+- ⏳ **#18** - Input-File-Erkennung für .java
+- ⏳ **#19** - Template-Anpassungen für Java
+- ⏳ **#20** - Test-Suite erweitern
+- ⏳ **#21** - Beispiel-Java-Projekt
+
+#### Phase 6: Dokumentation & Polishing
+- ⏳ **#22** - README aktualisieren
+- ⏳ **#23** - Wiki/Dokumentation erstellen
+- ⏳ **#24** - CLI-Optionen für Java
+
+### Aktueller Status (Stand: 2025-11-27)
+
+**Abgeschlossen:**
+- ✅ Issue #1: Java-Parser-Gem recherchieren und auswählen
+  - Entscheidung: JavaParser via CLI/Bridge
+  - Proof of Concept erfolgreich implementiert
+  - Dokumentation: `docs/parser-evaluation.md`
+  - PoC-Code: `poc/java-parser/`
+  - Commit: 9a5be251
+
+**Nächstes Issue:**
+- **#2** - Java-Parser Klasse erstellen (`lib/jsduck/java/parser.rb`)
+
+### Anweisungen für nächste Session
+
+**Zum Weitermachen:**
+```bash
+# Repository Status prüfen
+cd /Users/vid/Documents/GitHub/javaduck
+git status
+gh issue list --repo martinvidec/javaduck
+
+# Nächstes Issue starten
+gh issue view 2 --repo martinvidec/javaduck
+```
+
+**Workflow pro Issue:**
+1. Issue öffnen: `gh issue view <number>`
+2. Branch ist bereits `development-java-duck`
+3. Implementierung durchführen
+4. Tests schreiben/ausführen
+5. Committen mit `[Phase X.Y] <Titel>` und `Closes #<number>`
+6. Pushen
+7. Issue schließen: `gh issue close <number> --comment "..."`
+
+**Wichtige Dateien:**
+- `claude.md` - Dieser Strategie-Plan
+- `docs/parser-evaluation.md` - Parser-Entscheidung & Evaluierung
+- `poc/java-parser/` - Proof of Concept
+- `lib/jsduck/java/` - Zukünftige Java-Module (noch leer)
+
 ## Nächste Schritte
 
-1. **Java-Parser recherchieren** - Ruby-Gems und Alternativen evaluieren
-2. **Proof of Concept** - Minimaler Java::Parser für eine einfache Java-Klasse
-3. **Entscheidung** - Parser-Library festlegen
-4. **Implementierung** - Schrittweise nach Plan vorgehen
+1. ✅ **Java-Parser recherchieren** - ABGESCHLOSSEN (Issue #1)
+2. ✅ **Proof of Concept** - ABGESCHLOSSEN (Issue #1)
+3. ✅ **Entscheidung** - ABGESCHLOSSEN (JavaParser via CLI)
+4. ⏳ **Implementierung** - Issue #2: Java::Parser Klasse erstellen
 
 ## Referenzen
 
