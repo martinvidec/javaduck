@@ -1,6 +1,8 @@
 require 'jsduck/js/parser'
 require 'jsduck/js/ast'
 require 'jsduck/css/parser'
+require 'jsduck/java/parser'
+require 'jsduck/java/ast'
 require 'jsduck/doc/parser'
 require 'jsduck/doc/processor'
 require 'jsduck/doc/map'
@@ -36,10 +38,14 @@ module JsDuck
 
     private
 
-    # Parses the file depending on filename as JS or SCSS
+    # Parses the file depending on filename extension
+    # Supports: .scss, .java, and JavaScript files
     def parse_js_or_scss(contents, filename, options)
       if filename =~ /\.scss$/
         docs = Css::Parser.new(contents, options).parse
+      elsif filename =~ /\.java$/
+        docs = Java::Parser.new(contents, options).parse
+        docs = Java::Ast.new(docs).detect_all!
       else
         docs = Js::Parser.new(contents, options).parse
         docs = Js::Ast.new(docs).detect_all!
