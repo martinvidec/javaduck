@@ -1,5 +1,13 @@
 # JavaDuck - Plan zur Erweiterung von JSDuck für Java-Dokumentation
 
+---
+
+## ⚡ NEUE SESSION? → [Session-Start-Protokoll](#-session-start-protokoll) AUSFÜHREN!
+
+Bei jeder neuen Claude-Session: Springe direkt zum **Session-Start-Protokoll** (weiter unten), um automatisch den aktuellen Issue-Status abzurufen und mit dem nächsten offenen Issue fortzufahren.
+
+---
+
 ## Projektübersicht
 
 **JSDuck** ist ein API-Dokumentationsgenerator für JavaScript (ursprünglich für Sencha/Ext JS), geschrieben in Ruby. Das Projekt wird nicht mehr aktiv gewartet, bietet aber eine solide Architektur für Dokumentationsgenerierung.
@@ -639,6 +647,34 @@ gem 'java_parser' # TBD - zu recherchieren
 
 **Gesamt:** 12-19 Tage (je nach Java-Parser-Verfügbarkeit)
 
+## 🚀 Session-Start-Protokoll
+
+**WICHTIG: Bei jeder neuen Claude-Session folgende Schritte ausführen:**
+
+### 1. Repository & Issue Status prüfen
+```bash
+cd /Users/vid/Documents/GitHub/javaduck
+git status
+git pull
+gh issue list --repo martinvidec/javaduck --state open --limit 5
+```
+
+### 2. Nächstes offenes Issue identifizieren
+- Liste alle offenen Issues auf
+- Identifiziere das Issue mit der niedrigsten Nummer (sequentielle Abarbeitung)
+- Zeige dem User das nächste Issue an
+
+### 3. Issue-Details anzeigen
+```bash
+gh issue view <nummer> --repo martinvidec/javaduck
+```
+
+### 4. User fragen ob mit diesem Issue begonnen werden soll
+- Falls ja: Mit Implementierung beginnen (siehe Workflow unten)
+- Falls nein: User fragen welches Issue bearbeitet werden soll
+
+---
+
 ## ✅ Workflow mit GitHub Issues
 
 ### Issue-basierte Entwicklung
@@ -702,25 +738,19 @@ Alle Tasks wurden als GitHub Issues angelegt für bessere Nachverfolgbarkeit:
 
 ### Anweisungen für nächste Session
 
-**Zum Weitermachen:**
-```bash
-# Repository Status prüfen
-cd /Users/vid/Documents/GitHub/javaduck
-git status
-gh issue list --repo martinvidec/javaduck
+⚠️ **WICHTIG:** Bei Session-Start das **Session-Start-Protokoll** (siehe oben) ausführen!
 
-# Nächstes Issue starten
-gh issue view 2 --repo martinvidec/javaduck
-```
+Das Protokoll führt dich automatisch zum nächsten offenen Issue.
 
 **Workflow pro Issue:**
-1. Issue öffnen: `gh issue view <number>`
+1. Issue-Details anzeigen: `gh issue view <number>`
 2. Branch ist bereits `development-java-duck`
 3. Implementierung durchführen
 4. Tests schreiben/ausführen
 5. Committen mit `[Phase X.Y] <Titel>` und `Closes #<number>`
-6. Pushen
-7. Issue schließen: `gh issue close <number> --comment "..."`
+6. Pushen: `git push`
+7. Issue schließen: `gh issue close <number> --comment "✅ ..."`
+8. Zurück zu Schritt 1 des Session-Start-Protokolls
 
 **Wichtige Dateien:**
 - `claude.md` - Dieser Strategie-Plan
