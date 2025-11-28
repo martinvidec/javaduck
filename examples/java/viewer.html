@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaDuck Example - Java API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .class-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .class-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .class-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .class-card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .class-card .type {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: #e0e7ff;
+            color: #4c51bf;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .class-card .type.interface {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .class-card .type.enum {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .class-card .type.exception {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .class-card .description {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        .class-card .meta {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .class-card .meta div {
+            margin: 0.3rem 0;
+        }
+
+        .class-card .meta strong {
+            color: #555;
+        }
+
+        .class-detail {
+            display: none;
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .class-detail.active {
+            display: block;
+        }
+
+        .class-detail h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .class-detail .doc {
+            margin: 1rem 0;
+            line-height: 1.8;
+        }
+
+        .class-detail .members {
+            margin-top: 2rem;
+        }
+
+        .class-detail .members h3 {
+            color: #444;
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .member {
+            background: #f9fafb;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 4px;
+            border-left: 4px solid #667eea;
+        }
+
+        .member .signature {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #059669;
+            margin-bottom: 0.5rem;
+        }
+
+        .member .params {
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+        }
+
+        .member .param {
+            margin: 0.3rem 0;
+            font-size: 0.9rem;
+        }
+
+        .member .param code {
+            background: #e0e7ff;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            color: #4c51bf;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #667eea;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background: #5568d3;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .stats {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stats h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 4px;
+        }
+
+        .stat .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat .label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🦆 JavaDuck Example Documentation</h1>
+        <p>Java API Documentation generated with JavaDuck</p>
+    </header>
+
+    <div class="container">
+        <div id="overview">
+            <div class="stats">
+                <h2>Documentation Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat">
+                        <div class="number" id="classCount">0</div>
+                        <div class="label">Classes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="number" id="interfaceCount">0</div>
+                        <div class="label">Interfaces</div>
+                    </div>
+                    <div class="stat">
+                        <div class="number" id="methodCount">0</div>
+                        <div class="label">Methods</div>
+                    </div>
+                    <div class="stat">
+                        <div class="number" id="enumCount">0</div>
+                        <div class="label">Enums</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="class-list" id="classList"></div>
+        </div>
+
+        <div id="classDetail" class="class-detail"></div>
+    </div>
+
+    <script>
+        // List of generated JSON files (excluding global.json)
+        const classFiles = [
+            'AuthenticationException',
+            'DuplicateUserException',
+            'Person',
+            'StringUtils',
+            'TokenExpiredException',
+            'UnauthorizedException',
+            'User',
+            'UserNotFoundException',
+            'UserService'
+        ];
+
+        let classesData = {};
+        let stats = {
+            classes: 0,
+            interfaces: 0,
+            enums: 0,
+            methods: 0
+        };
+
+        async function loadClasses() {
+            for (const className of classFiles) {
+                try {
+                    const response = await fetch(`${className}.json`);
+                    const data = await response.json();
+                    classesData[className] = data;
+
+                    // Update stats
+                    if (data.tagname === 'class') {
+                        if (className.includes('Exception')) {
+                            // Don't count as regular class
+                        } else {
+                            stats.classes++;
+                        }
+                    }
+
+                    if (data.members) {
+                        data.members.forEach(member => {
+                            if (member.tagname === 'method') {
+                                stats.methods++;
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error(`Failed to load ${className}:`, error);
+                }
+            }
+
+            // Try to load additional files
+            try {
+                const response = await fetch('UserRole.json');
+                const data = await response.json();
+                classesData['UserRole'] = data;
+                stats.enums++;
+            } catch (e) {}
+
+            try {
+                const response = await fetch('Authenticatable.json');
+                const data = await response.json();
+                classesData['Authenticatable'] = data;
+                stats.interfaces++;
+            } catch (e) {}
+
+            renderStats();
+            renderClassList();
+        }
+
+        function renderStats() {
+            document.getElementById('classCount').textContent = stats.classes;
+            document.getElementById('interfaceCount').textContent = stats.interfaces;
+            document.getElementById('methodCount').textContent = stats.methods;
+            document.getElementById('enumCount').textContent = stats.enums;
+        }
+
+        function renderClassList() {
+            const classList = document.getElementById('classList');
+            classList.innerHTML = '';
+
+            Object.entries(classesData).sort().forEach(([className, data]) => {
+                const card = document.createElement('div');
+                card.className = 'class-card';
+                card.onclick = () => showClassDetail(className);
+
+                let type = 'class';
+                let typeClass = '';
+
+                if (className.includes('Exception')) {
+                    type = 'exception';
+                    typeClass = 'exception';
+                } else if (className === 'Authenticatable') {
+                    type = 'interface';
+                    typeClass = 'interface';
+                } else if (className === 'UserRole') {
+                    type = 'enum';
+                    typeClass = 'enum';
+                }
+
+                const doc = data.doc ? data.doc.replace(/<[^>]*>/g, '') : '';
+                const shortDoc = doc.length > 150 ? doc.substring(0, 150) + '...' : doc;
+
+                const methodCount = data.members ? data.members.filter(m => m.tagname === 'method').length : 0;
+
+                card.innerHTML = `
+                    <div class="type ${typeClass}">${type}</div>
+                    <h3>${className}</h3>
+                    <div class="description">${shortDoc || 'No description available'}</div>
+                    <div class="meta">
+                        ${data.extends ? `<div><strong>Extends:</strong> ${data.extends}</div>` : ''}
+                        ${methodCount > 0 ? `<div><strong>Methods:</strong> ${methodCount}</div>` : ''}
+                        ${data.author ? `<div><strong>Author:</strong> ${data.author.map(a => a.name).join(', ')}</div>` : ''}
+                        ${data.version ? `<div><strong>Version:</strong> ${data.version}</div>` : ''}
+                    </div>
+                `;
+
+                classList.appendChild(card);
+            });
+        }
+
+        function showClassDetail(className) {
+            const data = classesData[className];
+            const detail = document.getElementById('classDetail');
+            const overview = document.getElementById('overview');
+
+            overview.style.display = 'none';
+            detail.className = 'class-detail active';
+
+            const methods = data.members ? data.members.filter(m => m.tagname === 'method') : [];
+
+            detail.innerHTML = `
+                <a class="back-button" onclick="showOverview()">← Back to Overview</a>
+                <h2>${className}</h2>
+                ${data.extends ? `<p><strong>Extends:</strong> <code>${data.extends}</code></p>` : ''}
+                ${data.author ? `<p><strong>Author:</strong> ${data.author.map(a => a.name + (a.email ? ` (${a.email})` : '')).join(', ')}</p>` : ''}
+                ${data.version ? `<p><strong>Version:</strong> ${data.version}</p>` : ''}
+                ${data.since ? `<p><strong>Since:</strong> ${data.since}</p>` : ''}
+                ${data.see ? `<p><strong>See:</strong> ${data.see.join(', ')}</p>` : ''}
+
+                <div class="doc">${data.doc || '<p>No description available</p>'}</div>
+
+                ${methods.length > 0 ? `
+                    <div class="members">
+                        <h3>Methods (${methods.length})</h3>
+                        ${methods.map(method => `
+                            <div class="member">
+                                <div class="signature">
+                                    ${method.return_type || 'void'} ${method.name}(${
+                                        method.params ? method.params.map(p =>
+                                            `${p.type} ${p.name}`
+                                        ).join(', ') : ''
+                                    })
+                                </div>
+                                ${method.doc ? `<div>${method.doc}</div>` : ''}
+                                ${method.params && method.params.length > 0 ? `
+                                    <div class="params">
+                                        <strong>Parameters:</strong>
+                                        ${method.params.map(p => `
+                                            <div class="param">
+                                                <code>${p.name}</code> (${p.type})${p.doc ? ': ' + p.doc : ''}
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                ` : ''}
+                                ${method.return && method.return.doc ? `
+                                    <div><strong>Returns:</strong> ${method.return.doc}</div>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            `;
+
+            window.scrollTo(0, 0);
+        }
+
+        function showOverview() {
+            document.getElementById('overview').style.display = 'block';
+            document.getElementById('classDetail').className = 'class-detail';
+            window.scrollTo(0, 0);
+        }
+
+        // Load all classes on page load
+        loadClasses();
+    </script>
+</body>
+</html>
