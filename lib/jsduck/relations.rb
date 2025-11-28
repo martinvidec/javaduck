@@ -30,9 +30,11 @@ module JsDuck
 
       @subs = {}
       @mixes = {}
+      @impls = {}
       @classes.each do |cls|
         reg_subclasses(cls)
         reg_mixed_into(cls)
+        reg_implementations(cls)
       end
     end
 
@@ -89,6 +91,21 @@ module JsDuck
     # Returns classes having particular mixin, empty array if none
     def mixed_into(cls)
       @mixes[cls[:name]] || []
+    end
+
+    def reg_implementations(cls)
+      (cls[:implements] || []).each do |iface_name|
+        if @impls[iface_name]
+          @impls[iface_name] << cls
+        else
+          @impls[iface_name] = [cls]
+        end
+      end
+    end
+
+    # Returns classes implementing particular interface, empty array if none
+    def implementations(cls)
+      @impls[cls[:name]] || []
     end
   end
 

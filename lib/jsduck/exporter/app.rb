@@ -23,8 +23,11 @@ module JsDuck
         data[:superclasses] = cls.superclasses.collect {|c| c[:name] }
         data[:subclasses] = @relations.subclasses(cls).collect {|c| c[:name] }.sort
         data[:mixedInto] = @relations.mixed_into(cls).collect {|c| c[:name] }.sort
+        data[:implementations] = @relations.implementations(cls).collect {|c| c[:name] }.sort
         data[:alternateClassNames] = cls[:alternateClassNames].sort if cls[:alternateClassNames]
 
+        # Convert implements strings to ClassNameString objects
+        data[:implements] = (cls[:implements] || []).collect {|iface_name| @relations[iface_name] }.compact.collect {|c| c[:name] }.sort
         data[:mixins] = cls.deps(:mixins).collect {|c| c[:name] }.sort
         data[:parentMixins] = cls.parent_deps(:mixins).collect {|c| c[:name] }.sort
         data[:requires] = cls.deps(:requires).collect {|c| c[:name] }.sort
