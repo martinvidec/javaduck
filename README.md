@@ -1,24 +1,32 @@
-![JSDuck](https://raw.github.com/senchalabs/jsduck/master/opt/jsduck-logo-dark.png)
+JavaDuck
 ===================================================================================
 
-**Warning: JSDuck is no more maintained!**
-- If you're looking to adopt a documentation tool, try something else.
-- If you're using JSDuck, consider moving over to something else.
-- Even Sencha itself doesn't use it any more, they use some internal tool, that's not available publicly.
-- If you'd like to take over the maintenance of JSDuck, contact me by creating an issue.
+**JavaDuck** - API documentation generator for JavaScript AND Java
 
-[![Build Status](https://travis-ci.org/senchalabs/jsduck.png)](https://travis-ci.org/senchalabs/jsduck)
+This is a fork of [JSDuck](https://github.com/senchalabs/jsduck), extended with Java support including Javadoc parsing.
 
-API documentation generator for Sencha JavaScript frameworks.
+While the original JSDuck is no longer maintained, JavaDuck continues development with:
+- Full JavaScript/JSDoc support (original JSDuck features)
+- **NEW:** Java source code parsing
+- **NEW:** Javadoc comment support
+- **NEW:** Java-specific tags (@author, @version, @see, @since)
+- Unified documentation for mixed JavaScript/Java projects
 
-JSDuck aims to be a better documentation generator for [Ext JS][] than
-the old [ext-doc][] was. It is used by Sencha to document [Ext JS
+API documentation generator for JavaScript and Java projects.
+
+Originally based on JSDuck, which was used by Sencha to document [Ext JS
 4][ext4-docs], [Sencha Touch][touch2-docs] and [several other][other-docs]
 products.
 
-The highlights of JSDuck are [Markdown][] support and keeping you DRY
-by inferring a lot of information from code.  Read the
-[documentation][] for full overview.
+The highlights of JavaDuck include:
+- [Markdown][] support in documentation comments
+- Keeping you DRY by inferring a lot of information from code
+- **JavaScript support:** Full JSDoc parsing with all original JSDuck features
+- **Java support:** Complete Java source parsing with JavaParser
+- **Javadoc support:** All standard Javadoc tags (@param, @return, @throws, @author, @version, @see, @since, @deprecated)
+- **Mixed projects:** Document JavaScript and Java code together in one unified documentation site
+
+Read the [documentation][] for full overview.
 
 **New to JSDuck?** Watch [introductory talk by Nick Poulden][video]:
 
@@ -36,14 +44,35 @@ by inferring a lot of information from code.  Read the
 Getting it
 ----------
 
-Standard rubygems install should do:
+### From Source (Recommended for JavaDuck)
 
-    $ [sudo] gem install jsduck
+Clone the repository and install dependencies:
 
-Or download the [Windows binary][winbin]. When you run into problems,
-see the [installation guide][].
+    $ git clone https://github.com/martinvidec/javaduck.git
+    $ cd javaduck
+    $ bundle install
 
-[winbin]: https://github.com/senchalabs/jsduck/releases
+### Prerequisites
+
+For **Java support**, you need:
+- **Java Runtime Environment (JRE)** 8 or higher
+- JavaDuck uses JavaParser CLI to parse Java source files
+
+For **JavaScript support only**, no additional dependencies are needed beyond Ruby.
+
+### Installation
+
+Standard rubygems install (if published):
+
+    $ [sudo] gem install javaduck
+
+Or build from source:
+
+    $ rake build
+    $ gem install pkg/jsduck-*.gem
+
+When you run into problems, see the original JSDuck [installation guide][] (most steps still apply).
+
 [installation guide]: https://github.com/senchalabs/jsduck/wiki/Installation
 
 Usage
@@ -81,10 +110,58 @@ docs.
 [Usage guide]: https://github.com/senchalabs/jsduck/wiki/Usage
 
 
+Using JavaDuck with Java
+-------------------------
+
+JavaDuck automatically detects `.java` files and parses them with full Javadoc support:
+
+    $ jsduck src/main/java --output docs
+
+For mixed JavaScript/Java projects, simply include both source directories:
+
+    $ jsduck src/main/java src/main/resources/js --output docs
+
+JavaDuck recognizes Java-specific constructs:
+- Classes, interfaces, enums, and annotations
+- Methods with typed parameters and return types
+- Fields with full type information
+- Inheritance (`extends`) and interfaces (`implements`)
+- All Javadoc tags (@param, @return, @throws, @author, @version, @see, @since, @deprecated)
+
+Example Java documentation:
+
+```java
+/**
+ * A simple calculator class demonstrating JavaDuck documentation.
+ *
+ * This class provides basic arithmetic operations.
+ *
+ * @author John Doe
+ * @version 1.0
+ * @since 1.0
+ */
+public class Calculator {
+    /**
+     * Adds two numbers together.
+     *
+     * @param a The first number
+     * @param b The second number
+     * @return The sum of a and b
+     * @see #subtract(int, int)
+     */
+    public int add(int a, int b) {
+        return a + b;
+    }
+}
+```
+
+
 Documenting your code
 ---------------------
 
-Read the [documentation][] and take a look at [example.js][example].
+**JavaScript:** Read the [documentation][] and take a look at [example.js][example].
+
+**Java:** Use standard Javadoc comments with `/** ... */` syntax. JavaDuck supports all standard Javadoc tags.
 
 [example]: https://github.com/senchalabs/jsduck/blob/master/opt/example.js
 
