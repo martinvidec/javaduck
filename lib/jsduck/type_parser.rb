@@ -55,12 +55,38 @@ module JsDuck
       @relations = formatter.relations
       @formatter = formatter
       @primitives = {
+        # JavaScript primitives
         "boolean" => "Boolean",
         "number" => "Number",
         "string" => "String",
         "null" => "null",
         "undefined" => "undefined",
         "void" => "void",
+
+        # Java primitives
+        "int" => "Number",
+        "long" => "Number",
+        "double" => "Number",
+        "float" => "Number",
+        "short" => "Number",
+        "byte" => "Number",
+        "char" => "String",
+
+        # Java wrapper types (primitives boxed)
+        "Integer" => "Number",
+        "Long" => "Number",
+        "Double" => "Number",
+        "Float" => "Number",
+        "Short" => "Number",
+        "Byte" => "Number",
+        "Character" => "String",
+        "Boolean" => "Boolean",
+
+        # Java common types
+        "String" => "String",
+        "Object" => "Object",
+        "Class" => "Object",
+        "Void" => "void",
       }
     end
 
