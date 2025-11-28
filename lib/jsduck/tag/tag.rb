@@ -1,6 +1,7 @@
-module JsDuck::Tag
-  # Base class for all builtin tags.
-  class Tag
+module JsDuck
+  module Tag
+    # Base class for all builtin tags.
+    class Tag
     # Defines the name of the @tag.
     # The name itself must not contain the "@" sign.
     # For example: "cfg"
@@ -164,6 +165,7 @@ module JsDuck::Tag
         result << cls if cls < self
       end
       result
+    end
     end
   end
 end

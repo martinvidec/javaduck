@@ -1,20 +1,20 @@
 require "jsduck/java/parser"
 
+# Helper method to check if JavaParser JAR is available
+def jar_available?
+  parser = JsDuck::Java::Parser.new("")
+  begin
+    parser.send(:jar_path)
+    true
+  rescue
+    false
+  end
+end
+
 describe JsDuck::Java::Parser do
 
   def parse(input)
     JsDuck::Java::Parser.new(input).parse
-  end
-
-  # Check if JavaParser JAR is available
-  def jar_available?
-    parser = JsDuck::Java::Parser.new("")
-    begin
-      parser.send(:jar_path)
-      true
-    rescue
-      false
-    end
   end
 
   describe "when JavaParser JAR is not available" do
@@ -122,7 +122,8 @@ describe JsDuck::Java::Parser do
         method[:params].length.should == 2
         method[:params][0][:name].should == "id"
         method[:params][0][:type].should == "int"
-        method[:params][1][:name].should == "boolean"
+        method[:params][1][:name].should == "active"
+        method[:params][1][:type].should == "boolean"
       end
 
       it "extracts return type" do
