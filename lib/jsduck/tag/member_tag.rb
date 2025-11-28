@@ -91,6 +91,11 @@ module JsDuck::Tag
         :private => code[:private],
         :inheritable => code[:inheritable],
         :linenr => code[:linenr],
+        # Java-specific modifiers
+        :public => code[:public],
+        :protected => code[:protected],
+        :final => code[:final],
+        :abstract => code[:abstract],
       }
     end
 

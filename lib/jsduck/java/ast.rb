@@ -1,36 +1,61 @@
 module JsDuck
   module Java
 
-    # Placeholder for Java AST detection.
+    # Processes Java AST to extract members from classes.
     #
-    # Unlike JavaScript where AST detection is complex (detecting classes
-    # from various patterns), Java parsing is handled entirely by JavaParser CLI.
-    # The Java::Parser already returns fully structured docsets with detected
-    # classes, methods, fields, etc.
-    #
-    # This class currently acts as a pass-through, but will be expanded in
-    # Phase 2 (Issues #5-#11) to add additional detection and processing if needed.
-    #
-    # For now, it simply returns the docsets unchanged to maintain
-    # architectural consistency with Js::Parser flow.
+    # Java parsing returns classes with nested members, but JSDuck expects
+    # members to be separate docsets. This class extracts nested members
+    # into separate docsets while preserving all their properties (including modifiers).
     class Ast
 
       def initialize(docs = [])
         @docs = docs
       end
 
-      # Returns all docsets unchanged.
+      # Extracts nested members from classes into separate docsets.
       #
-      # In the future, this method may add additional detection logic for:
-      # - Anonymous inner classes
-      # - Lambda expressions
-      # - Annotations
-      # - Other Java-specific constructs not fully handled by JavaParser CLI
+      # JavaParser CLI returns classes with members as nested structures:
+      #   code: { tagname: :class, members: [...] }
       #
-      # For now, it's a pass-through since JavaParser CLI already provides
-      # complete class/method/field detection.
+      # But JSDuck expects members as separate docsets:
+      #   { code: { tagname: :method }, ... }
+      #   { code: { tagname: :field }, ... }
+      #
+      # This method flattens the structure while preserving all member properties.
       def detect_all!
-        @docs
+        result = []
+
+        @docs.each do |docset|
+          # Add the original docset (class, interface, enum)
+          result << docset
+
+          # If this is a class/interface/enum with members, extract them
+          if docset[:code] && docset[:code][:members]
+            docset[:code][:members].each do |member|
+              # Create a new docset for each member
+              member_docset = {
+                :comment => member[:comment] || '',
+                :code => member.dup,  # Copy all member properties
+                :linenr => member[:linenr] || docset[:linenr],
+                :type => :doc_comment
+              }
+
+              # Remove member-specific fields that shouldn't be in code
+              member_docset[:code].delete(:comment)
+              member_docset[:code].delete(:linenr)
+
+              # Ensure the member has an owner set to the class name
+              member_docset[:code][:owner] = docset[:code][:name]
+
+              result << member_docset
+            end
+
+            # Remove members from class (they're now separate docsets)
+            docset[:code].delete(:members)
+          end
+        end
+
+        result
       end
 
     end
