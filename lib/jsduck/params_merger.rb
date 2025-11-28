@@ -6,16 +6,37 @@ module JsDuck
   # Used by Method, Event and CssMixin members.
   class ParamsMerger
     # Ensures the existance of params array.
-    # Defaults type of each parameter to "Object".
+    # Merges types from code params when doc params don't have types (Javadoc style).
+    # Defaults type of each parameter to "Object" if no type available.
     # Logs warnings for inconsistencies between params in code and in docs.
     def self.merge(h, docs, code)
       h[:params] = [] unless h[:params]
 
+      # Merge types from code params into doc params (for Javadoc support)
+      merge_types_from_code(h[:params], code[:params] || [])
+
+      # Default any remaining typeless params to "Object"
       h[:params].each do |p|
         p[:type] = "Object" unless p[:type]
       end
 
       check_consistency(docs, code, h[:files].first)
+    end
+
+    # Merges type information from code params into doc params.
+    # This supports Javadoc style where @param doesn't include type,
+    # but JavaParser CLI provides the type from code.
+    def self.merge_types_from_code(doc_params, code_params)
+      doc_params.each do |doc_param|
+        # Skip if doc param already has a type (JSDoc style)
+        next if doc_param[:type]
+
+        # Find matching code param by name
+        code_param = code_params.find { |cp| cp[:name] == doc_param[:name] }
+
+        # Merge type from code if found
+        doc_param[:type] = code_param[:type] if code_param && code_param[:type]
+      end
     end
 
     def self.check_consistency(docs, code, file)

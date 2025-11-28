@@ -38,12 +38,34 @@ module JsDuck::Tag
       h[:chainable] = code[:chainable]
       h[:fires] = code[:fires]
       h[:method_calls] = code[:method_calls]
+      h[:return_type] = code[:return_type] if code[:return_type]
       h
     end
 
     def merge(h, docs, code)
       JsDuck::ParamsMerger.merge(h, docs, code)
+      merge_return_type(h, docs, code)
     end
+
+    private
+
+    # Merges return type from code when @return tag doesn't specify type (Javadoc style).
+    # In Javadoc, @return only has description, type comes from method signature.
+    def merge_return_type(h, docs, code)
+      if h[:return] && !h[:return][:type] && code[:return_type]
+        h[:return][:type] = code[:return_type]
+      elsif !h[:return] && code[:return_type] && code[:return_type] != "void"
+        # Auto-detect return when not documented but present in code (except void)
+        h[:return] = {
+          :type => code[:return_type],
+          :name => "return",
+          :doc => "",
+          :properties => []
+        }
+      end
+    end
+
+    public
 
     def to_html(m, cls)
       new_kw(m) + method_link(m, cls) + member_params(m[:params]) + return_value(m)
