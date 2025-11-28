@@ -111,6 +111,7 @@ module JsDuck::Tag
     POS_THROWS = 14
     POS_FIRES = 15
     POS_OVERRIDES = 16
+    POS_SEE = 17
 
     # Called before #to_html to allow rendering of Markdown content.
     # For this an instance of DocFormatter is passed in, on which one
