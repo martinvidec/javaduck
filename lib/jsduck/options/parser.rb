@@ -41,6 +41,8 @@ module JsDuck
         banner "Usage: jsduck [options] files/dirs..."
 
         separator ""
+        separator "JavaDuck - API documentation generator for JavaScript AND Java"
+        separator ""
         separator "For example:"
         separator ""
         separator "    # Documentation for builtin JavaScript classes like Array and String"
@@ -48,6 +50,12 @@ module JsDuck
         separator ""
         separator "    # Documentation for your own JavaScript"
         separator "    jsduck --output output/dir  input-file.js some/input/dir"
+        separator ""
+        separator "    # Documentation for Java project"
+        separator "    jsduck --output output/dir  src/main/java"
+        separator ""
+        separator "    # Documentation for mixed Java + JavaScript project"
+        separator "    jsduck --output output/dir  src/main/java src/main/resources/js"
         separator ""
         separator "The main options:"
         separator ""
@@ -166,9 +174,14 @@ module JsDuck
         option('--exclude=PATH1,PATH2', Array, "Exclude input file or directory.",
           "",
           "For example to include all the subdirs of",
-          "/app/js except /app/js/new, run JSDuck with:",
+          "/app/js except /app/js/new, run JavaDuck with:",
           "",
-          "  jsduck /app/js --exclude /app/js/new") do |paths|
+          "  jsduck /app/js --exclude /app/js/new",
+          "",
+          "For Java projects, you can exclude test directories:",
+          "",
+          "  jsduck src/main/java --exclude 'src/test'",
+          "  jsduck src/main/java --exclude '**/test/**'") do |paths|
           @opts.exclude += paths.map {|p| canonical(p) }
         end
 
@@ -176,11 +189,11 @@ module JsDuck
         separator "Customizing output:"
         separator ""
 
-        attribute :title, "Documentation - JSDuck"
+        attribute :title, "Documentation - JavaDuck"
         option('--title=TEXT',
           "Custom title text for the documentation.",
           "",
-          "Defaults to 'Documentation - JSDuck'",
+          "Defaults to 'Documentation - JavaDuck'",
           "",
           "The title will be used both inside <title> and in",
           "the header of the page.  Inside page header the left",
@@ -195,8 +208,8 @@ module JsDuck
           "The text can contain various placeholders:",
           "",
           "  {DATE} - current date and time.",
-          "  {JSDUCK} - link to JSDuck homepage.",
-          "  {VERSION} - JSDuck version number.",
+          "  {JSDUCK} - link to JavaDuck homepage.",
+          "  {VERSION} - JavaDuck version number.",
           "",
           "Defaults to: 'Generated on {DATE} by {JSDUCK} {VERSION}.'") do |text|
           @opts.footer = text
@@ -875,8 +888,9 @@ module JsDuck
           exit
         end
 
-        option('--version', "Prints JSDuck version") do
-          puts "JSDuck " + JsDuck::VERSION + " (Ruby #{RUBY_VERSION})"
+        option('--version', "Prints JavaDuck version") do
+          puts "JavaDuck " + JsDuck::VERSION + " (Ruby #{RUBY_VERSION})"
+          puts "Extended JSDuck with Java support"
           exit
         end
       end
