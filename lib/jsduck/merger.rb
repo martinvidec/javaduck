@@ -37,12 +37,20 @@ module JsDuck
 
     # Applies processing to extract fields relevant to the member type.
     def process_code(tagname, code)
-      TagRegistry.get_by_name(tagname).process_code(code)
+      tag = TagRegistry.get_by_name(tagname)
+      if tag && tag.respond_to?(:process_code)
+        tag.process_code(code)
+      else
+        code || {}
+      end
     end
 
     # Invokes the #merge method in corresponding member or :class tag.
     def invoke_merge_in_member_tag(h, docs, code)
-      TagRegistry.get_by_name(h[:tagname]).merge(h, docs, code)
+      tag = TagRegistry.get_by_name(h[:tagname])
+      if tag && tag.respond_to?(:merge)
+        tag.merge(h, docs, code)
+      end
     end
 
     # Applies default merge algorithm to the rest of the data.

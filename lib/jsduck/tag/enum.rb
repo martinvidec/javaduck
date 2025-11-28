@@ -52,6 +52,16 @@ module JsDuck::Tag
       }
     end
 
+    # Processes code after it's been detected as enum
+    def process_code(code)
+      code || {}
+    end
+
+    # Merges doc and code hashes
+    def merge(h, docs, code)
+      # Enum-specific merging logic (if needed)
+    end
+
     def to_html(cls)
       if cls[:enum][:doc_only]
         first = cls[:members][0] || {:name => 'foo', :default => '"foo"'}

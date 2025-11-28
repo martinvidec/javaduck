@@ -20,5 +20,15 @@ module JsDuck::Tag
       # method top-level docs.
       h[:doc] += tags[0][:doc]
     end
+
+    # Processes code after it's been detected as constructor
+    def process_code(code)
+      code || {}
+    end
+
+    # Merges doc and code hashes
+    def merge(h, docs, code)
+      # Constructor-specific merging logic (if needed)
+    end
   end
 end
