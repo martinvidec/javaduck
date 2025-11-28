@@ -33,7 +33,7 @@ module JsDuck
       private
 
       def render_alternate_class_names(names)
-        return if names.length == 0
+        return if !names || names.length == 0
 
         return [
           "<h4>Alternate names</h4>",

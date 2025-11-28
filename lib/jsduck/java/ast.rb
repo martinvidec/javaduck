@@ -26,6 +26,13 @@ module JsDuck
         result = []
 
         @docs.each do |docset|
+          # Convert tagname from String to Symbol if needed
+          # JavaParser returns "interface", "class", "enum" as strings
+          # but JSDuck expects :interface, :class, :enum as symbols
+          if docset[:code] && docset[:code][:tagname].is_a?(String)
+            docset[:code][:tagname] = docset[:code][:tagname].to_sym
+          end
+
           # Add the original docset (class, interface, enum)
           result << docset
 
@@ -44,7 +51,12 @@ module JsDuck
               member_docset[:code].delete(:comment)
               member_docset[:code].delete(:linenr)
 
-              # Ensure the member has an owner set to the class name
+              # Convert member tagname from String to Symbol
+              if member_docset[:code][:tagname].is_a?(String)
+                member_docset[:code][:tagname] = member_docset[:code][:tagname].to_sym
+              end
+
+              # Ensure the member has an owner set to the class/interface/enum name
               member_docset[:code][:owner] = docset[:code][:name]
 
               result << member_docset

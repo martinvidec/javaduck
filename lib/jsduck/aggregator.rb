@@ -41,7 +41,8 @@ module JsDuck
     # Registers documentation node either as class or as member of
     # some class.
     def register(node)
-      if node[:tagname] == :class
+      # Treat classes, interfaces, and enums as class-like containers
+      if [:class, :interface, :enum].include?(node[:tagname])
         add_class(node)
       else
         add_member(node)
@@ -65,7 +66,8 @@ module JsDuck
         @classes[cls[:name]] = cls
 
         # Register all alternate names of class for lookup too
-        cls[:alternateClassNames].each do |altname|
+        # (Interfaces and enums may not have alternateClassNames)
+        (cls[:alternateClassNames] || []).each do |altname|
           if cls[:name] == altname
             # A buggy documentation, warn.
             warn_alt_name(cls)

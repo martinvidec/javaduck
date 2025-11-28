@@ -16,18 +16,19 @@ module JsDuck
         classes.each do |cls|
           list << class_node(cls)
 
-          cls[:alternateClassNames].each do |name|
+          # Interfaces and enums may not have these arrays initialized
+          (cls[:alternateClassNames] || []).each do |name|
             list << alt_node(name, cls)
           end
 
-          cls[:aliases].each_pair do |key, items|
+          (cls[:aliases] || {}).each_pair do |key, items|
             items.each do |name|
               list << alias_node(key, name, cls)
             end
           end
 
           # add all local members, but skip constructors
-          cls[:members].each do |m|
+          (cls[:members] || []).each do |m|
             list << member_node(m, cls) unless m[:hide] || constructor?(m)
           end
         end

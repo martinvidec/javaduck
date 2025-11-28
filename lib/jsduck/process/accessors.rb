@@ -31,6 +31,9 @@ module JsDuck
       # When class already contains a getter or setter, the method is
       # not added.
       def process(cls)
+        # Ensure members array exists (interfaces and enums may not have it initialized)
+        cls[:members] ||= []
+
         # Grab all configs tagged as @accessor
         accessors = cls[:members].find_all {|m| m[:tagname] == :cfg && m[:accessor] }
 
