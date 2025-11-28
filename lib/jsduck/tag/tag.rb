@@ -100,6 +100,7 @@ module JsDuck::Tag
     POS_LOCALDOC = 4
     POS_DEFAULT = 5
     POS_SINCE = 6
+    POS_VERSION = 6.5
     POS_DEPRECATED = 7
     POS_ENUM = 8
     POS_TEMPLATE = 9
