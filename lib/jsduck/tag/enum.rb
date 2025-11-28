@@ -6,12 +6,23 @@ module JsDuck::Tag
       @pattern = "enum"
       @tagname = :enum
       @html_position = POS_ENUM
+      @class_icon = {
+        :small => File.dirname(__FILE__) + "/icons/enum.png",
+        :large => File.dirname(__FILE__) + "/icons/enum-large.png",
+        :redirect => File.dirname(__FILE__) + "/icons/enum-redirect.png",
+        :priority => PRIORITY_ENUM,
+      }
+      @signature = {:long => "enum", :short => "ENUM"}
       # Green box
       @css = <<-EOCSS
         .enum-box {
           color: #060;
           background-color: #efe;
           text-align: center;
+        }
+        .signature .enum {
+          background-color: #33aa33;
+          color: white;
         }
       EOCSS
     end

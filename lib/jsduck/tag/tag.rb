@@ -152,6 +152,8 @@ module JsDuck::Tag
     attr_reader :class_icon
 
     PRIORITY_SINGLETON = 2
+    PRIORITY_INTERFACE = 1.5
+    PRIORITY_ENUM = 1.5
     PRIORITY_COMPONENT = 1
     PRIORITY_CLASS = 0
 
