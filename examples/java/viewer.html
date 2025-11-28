@@ -305,7 +305,7 @@
         async function loadClasses() {
             for (const className of classFiles) {
                 try {
-                    const response = await fetch(`${className}.json`);
+                    const response = await fetch(`docs-json/${className}.json`);
                     const data = await response.json();
                     classesData[className] = data;
 
@@ -332,14 +332,14 @@
 
             // Try to load additional files
             try {
-                const response = await fetch('UserRole.json');
+                const response = await fetch('docs-json/UserRole.json');
                 const data = await response.json();
                 classesData['UserRole'] = data;
                 stats.enums++;
             } catch (e) {}
 
             try {
-                const response = await fetch('Authenticatable.json');
+                const response = await fetch('docs-json/Authenticatable.json');
                 const data = await response.json();
                 classesData['Authenticatable'] = data;
                 stats.interfaces++;
