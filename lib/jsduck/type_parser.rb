@@ -342,7 +342,7 @@ module JsDuck
     #
     #     <type-name> ::= <type-application> | "*"
     #
-    #     <type-application> ::= <ident-chain> [ "." "<" <type-arguments> ">" ]
+    #     <type-application> ::= <ident-chain> [ ( "." "<" | "<" ) <type-arguments> ">" ]
     #
     #     <type-arguments> ::= <alteration-type> [ "," <alteration-type> ]*
     #
@@ -370,12 +370,22 @@ module JsDuck
         return false
       end
 
-      # All type names besides * can be followed by .<arguments>
-      if name != "*" && @input.scan(/\.</)
-        @out << ".&lt;"
-        return false unless type_arguments
-        return false unless @input.scan(/>/)
-        @out << "&gt;"
+      # All type names besides * can be followed by .<arguments> (Closure Compiler)
+      # or <arguments> (Java Generics)
+      if name != "*"
+        if @input.scan(/\.</)
+          # Closure Compiler syntax: Array.<string>
+          @out << ".&lt;"
+          return false unless type_arguments
+          return false unless @input.scan(/>/)
+          @out << "&gt;"
+        elsif @input.scan(/</)
+          # Java Generics syntax: List<String>
+          @out << "&lt;"
+          return false unless type_arguments
+          return false unless @input.scan(/>/)
+          @out << "&gt;"
+        end
       end
 
       true

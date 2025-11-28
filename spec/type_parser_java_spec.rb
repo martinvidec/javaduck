@@ -214,4 +214,142 @@ describe "JsDuck::TypeParser with Java types" do
     end
   end
 
+  describe "Java Generics (native syntax)" do
+    # Helper for generics tests with custom relations
+    def parse_generics(str)
+      relations = JsDuck::Relations.new([], [
+        "List",
+        "Map",
+        "Set",
+        "ArrayList",
+        "HashMap",
+        "String",
+        "Number",
+        "Object",
+      ])
+      formatter = OpenStruct.new(:relations => relations)
+      parser = JsDuck::TypeParser.new(formatter)
+      parser.parse(str)
+    end
+
+    it "matches List<String>" do
+      parse_generics("List<String>").should == true
+    end
+
+    it "matches Map<String,Number>" do
+      parse_generics("Map<String,Number>").should == true
+    end
+
+    it "matches Set<Object>" do
+      parse_generics("Set<Object>").should == true
+    end
+
+    it "matches nested generics List<List<String>>" do
+      parse_generics("List<List<String>>").should == true
+    end
+
+    it "matches ArrayList<String>" do
+      parse_generics("ArrayList<String>").should == true
+    end
+
+    it "matches HashMap<String,Object>" do
+      parse_generics("HashMap<String,Object>").should == true
+    end
+
+    it "matches with primitive types List<int>" do
+      parse_generics("List<int>").should == true
+    end
+
+    it "matches with multiple type params Map<String,List<Integer>>" do
+      parse_generics("Map<String,List<Integer>>").should == true
+    end
+
+    it "still supports Closure Compiler syntax List.<String>" do
+      parse_generics("List.<String>").should == true
+    end
+
+    it "matches List<String>[]" do
+      parse_generics("List<String>[]").should == true
+    end
+
+    it "matches ?List<String> (nullable generic)" do
+      parse_generics("?List<String>").should == true
+    end
+
+    it "matches List<String>... (varargs generic)" do
+      parse_generics("List<String>...").should == true
+    end
+
+    it "matches function returning generic: function(): List<String>" do
+      parse_generics("function(): List<String>").should == true
+    end
+
+    it "matches function with generic param: function(List<String>): void" do
+      parse_generics("function(List<String>): void").should == true
+    end
+
+    it "matches complex function: function(Map<String,List<Integer>>): Set<Object>" do
+      parse_generics("function(Map<String,List<Integer>>): Set<Object>").should == true
+    end
+  end
+
+  describe "Java fully-qualified types (FQN)" do
+    def parse_fqn(str)
+      relations = JsDuck::Relations.new([], [
+        "java.util.List",
+        "java.util.Map",
+        "java.lang.String",
+        "java.lang.Object",
+        "com.example.MyClass",
+      ])
+      formatter = OpenStruct.new(:relations => relations)
+      parser = JsDuck::TypeParser.new(formatter)
+      parser.parse(str)
+    end
+
+    it "matches java.util.List" do
+      parse_fqn("java.util.List").should == true
+    end
+
+    it "matches java.util.Map" do
+      parse_fqn("java.util.Map").should == true
+    end
+
+    it "matches java.lang.String" do
+      parse_fqn("java.lang.String").should == true
+    end
+
+    it "matches com.example.MyClass" do
+      parse_fqn("com.example.MyClass").should == true
+    end
+
+    it "matches FQN with generics java.util.List<String>" do
+      parse_fqn("java.util.List<String>").should == true
+    end
+
+    it "matches FQN with multiple generics java.util.Map<String,Object>" do
+      parse_fqn("java.util.Map<String,Object>").should == true
+    end
+
+    it "matches nested FQN generics java.util.List<java.lang.String>" do
+      parse_fqn("java.util.List<java.lang.String>").should == true
+    end
+
+    it "matches FQN arrays java.lang.String[]" do
+      parse_fqn("java.lang.String[]").should == true
+    end
+
+    it "matches FQN generic arrays java.util.List<String>[]" do
+      parse_fqn("java.util.List<String>[]").should == true
+    end
+
+    it "matches function with FQN: function(java.util.List): void" do
+      parse_fqn("function(java.util.List): void").should == true
+    end
+
+    it "matches function with FQN generics: function(java.util.Map<String,Object>): java.lang.String" do
+      parse_fqn("function(java.util.Map<String,Object>): java.lang.String").should == true
+    end
+  end
+
 end
