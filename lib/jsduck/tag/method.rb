@@ -68,10 +68,22 @@ module JsDuck::Tag
     public
 
     def to_html(m, cls)
-      new_kw(m) + method_link(m, cls) + member_params(m[:params]) + return_value(m)
+      modifiers(m) + new_kw(m) + method_link(m, cls) + member_params(m[:params]) + return_value(m)
     end
 
     private
+
+    def modifiers(m)
+      mods = []
+      mods << "public" if m[:public]
+      mods << "private" if m[:private]
+      mods << "protected" if m[:protected]
+      mods << "static" if m[:static]
+      mods << "final" if m[:final]
+      mods << "abstract" if m[:abstract]
+
+      mods.empty? ? "" : "<span class='modifiers'>#{mods.join(' ')}</span> "
+    end
 
     def new_kw(m)
       constructor?(m) ? "<strong class='new-keyword'>new</strong>" : ""

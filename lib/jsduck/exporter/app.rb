@@ -51,6 +51,10 @@ module JsDuck
         [:name, :tagname, :owner, :id].each do |key|
           m_copy[key] = m[key]
         end
+        # Include Java modifiers
+        [:public, :private, :protected, :static, :final, :abstract].each do |modifier|
+          m_copy[modifier] = m[modifier] if m[modifier]
+        end
         m_copy[:meta] = combine_meta(m)
         m_copy
       end
