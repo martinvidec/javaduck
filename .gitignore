@@ -2,8 +2,10 @@
 template/extjs
 template/resources/css
 template/resources/sass/.sass-cache
+.sass-cache/
 template-min/
 sdk-vars.rb
 vendor/bundle
 .bundle
 Gemfile.lock
+.DS_Store
