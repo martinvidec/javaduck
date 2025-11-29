@@ -52,8 +52,11 @@ module JsDuck::Tag
     # Merges return type from code when @return tag doesn't specify type (Javadoc style).
     # In Javadoc, @return only has description, type comes from method signature.
     def merge_return_type(h, docs, code)
-      if h[:return] && !h[:return][:type] && code[:return_type]
-        h[:return][:type] = code[:return_type]
+      # If @return exists but has no type or default "Object" type, use code type
+      if h[:return] && code[:return_type]
+        if !h[:return][:type] || h[:return][:type] == "Object"
+          h[:return][:type] = code[:return_type]
+        end
       elsif !h[:return] && code[:return_type] && code[:return_type] != "void"
         # Auto-detect return when not documented but present in code (except void)
         h[:return] = {
