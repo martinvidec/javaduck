@@ -56,6 +56,11 @@ module JsDuck
                 member_docset[:code][:tagname] = member_docset[:code][:tagname].to_sym
               end
 
+              # Convert Java :field to :property (JSDuck uses :property for fields/members)
+              if member_docset[:code][:tagname] == :field
+                member_docset[:code][:tagname] = :property
+              end
+
               # Ensure the member has an owner set to the class/interface/enum name
               member_docset[:code][:owner] = docset[:code][:name]
 
