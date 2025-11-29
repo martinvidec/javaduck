@@ -599,6 +599,24 @@ end
 - Merger
 - Web-Output-Layer
 
+### CSS/SCSS-Handling
+
+**⚠️ WICHTIG: Keine Compass/SCSS-Kompilierung verwenden!**
+
+Da JSDuck über 10 Jahre alt ist, funktioniert der Compass/SCSS-Build-Prozess nicht mehr zuverlässig:
+- `compass compile` kann die Stylesheets beschädigen
+- ExtJS 4 SCSS-Imports sind nicht mehr verfügbar
+- Alte Ruby-Gems (compass, sass) haben Kompatibilitätsprobleme
+
+**Strategie für CSS-Änderungen:**
+- ✅ **CSS direkt bearbeiten:** Alle Änderungen direkt in `template/resources/css/` vornehmen
+- ❌ **NICHT SCSS bearbeiten:** SCSS-Dateien in `template/resources/sass/` NICHT ändern
+- ❌ **NICHT kompilieren:** `compass compile` NICHT ausführen
+
+**Wichtige CSS-Dateien:**
+- `template/resources/css/viewport.css` - Hauptstyles für die Dokumentation
+- `template/resources/css/docs-ext.css` - ExtJS-Theme-Overrides (meist leer/fehlerhaft)
+
 ## Abhängigkeiten & Voraussetzungen
 
 ### Ruby-Gems
