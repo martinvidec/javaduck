@@ -23,6 +23,9 @@ module JsDuck::Tag
         .signature .enum {
           background-color: #33aa33;
           color: white;
+          padding: 0 5px;
+          margin-left: 2px;
+          border-radius: 3px;
         }
       EOCSS
     end

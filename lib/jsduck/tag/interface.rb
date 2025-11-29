@@ -24,6 +24,9 @@ module JsDuck::Tag
         .signature .interface {
           background-color: #3366cc;
           color: white;
+          padding: 0 5px;
+          margin-left: 2px;
+          border-radius: 3px;
         }
       EOCSS
     end

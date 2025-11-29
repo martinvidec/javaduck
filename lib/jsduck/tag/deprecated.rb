@@ -8,6 +8,10 @@ module JsDuck::Tag
       @css = <<-EOCSS
         .signature .deprecated {
           background-color: #aa0000;
+          color: white;
+          padding: 0 5px;
+          margin-left: 2px;
+          border-radius: 3px;
         }
         .deprecated-box {
           border: 2px solid #aa0000;

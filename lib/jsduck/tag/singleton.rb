@@ -16,6 +16,9 @@ module JsDuck::Tag
         .signature .singleton {
           background-color: transparent;
           color: #929292;
+          padding: 0 5px;
+          margin-left: 2px;
+          border-radius: 3px;
         }
       EOCSS
       super

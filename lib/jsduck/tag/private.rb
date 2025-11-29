@@ -9,6 +9,10 @@ module JsDuck::Tag
       @css = <<-EOCSS
         .signature .private {
           background-color: #FD6B1B; /* orange */
+          color: white;
+          padding: 0 5px;
+          margin-left: 2px;
+          border-radius: 3px;
         }
         .private-box {
           background-color: #fee;

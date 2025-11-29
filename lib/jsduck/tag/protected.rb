@@ -5,7 +5,15 @@ module JsDuck::Tag
     def initialize
       @pattern = "protected"
       @signature = {:long => "protected", :short => "PRO"}
-      @css = ".signature .protected { background-color: #9B86FC }" # Violet
+      @css = <<-EOCSS
+        .signature .protected {
+          background-color: #9B86FC;
+          color: white;
+          padding: 0 5px;
+          margin-left: 2px;
+          border-radius: 3px;
+        }
+      EOCSS
       super
     end
   end

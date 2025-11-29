@@ -11,6 +11,9 @@ module JsDuck::Tag
         .signature .new {
           color: #484848;
           background-color: #F5D833;
+          padding: 0 5px;
+          margin-left: 2px;
+          border-radius: 3px;
         }
       EOCSS
       super

@@ -12,6 +12,9 @@ module JsDuck::Tag
           color: #a00;
           border: 1px dashed #a00;
           background-color: #fee;
+          padding: 0 5px;
+          margin-left: 2px;
+          border-radius: 3px;
         }
         .experimental-box {
           border: 2px dashed #ccc;

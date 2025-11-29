@@ -15,6 +15,9 @@ module JsDuck::Tag
           background-color: transparent;
           border: 1px solid #aa0000;
           text-decoration: line-through;
+          padding: 0 5px;
+          margin-left: 2px;
+          border-radius: 3px;
         }
         .removed-box {
           border: 2px solid #aa0000;
