@@ -41,7 +41,7 @@ module JsDuck
             html << "<span class='#{s[:tagname]}' #{title}>#{s[:long]}</span>"
           end
         end
-        '<span class="signature">' + html.join + "</span>"
+        html.empty? ? "" : '<span class="signature">' + html.join + "</span>"
       end
 
     end
