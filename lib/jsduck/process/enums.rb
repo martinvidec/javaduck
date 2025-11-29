@@ -54,13 +54,13 @@ module JsDuck
         end
       end
 
-      # Only allow properties as members, throw away all others.
+      # Only allow properties and enum_constants as members, throw away all others.
       def reject_not_properties(cls)
         cls[:members].reject! do |m|
-          if m[:tagname] == :property
+          if m[:tagname] == :property || m[:tagname] == :enum_constant
             false
           else
-            Logger.warn(:enum, "Enums can only contain properties, #{m[:tagname]} found instead.", m[:files][0])
+            Logger.warn(:enum, "Enums can only contain properties or enum_constants, #{m[:tagname]} found instead.", m[:files][0])
             true
           end
         end

@@ -21,6 +21,10 @@ module JsDuck
         :property
       elsif code[:tagname] == :class
         :class
+      elsif code[:tagname] == :interface
+        :interface
+      elsif code[:tagname] == :enum
+        :enum
       elsif code[:tagname] == :css_mixin
         :css_mixin
       elsif doc_map[:cfg]

@@ -116,6 +116,14 @@ public class JavaParserCLI {
         // Members
         List<Map<String, Object>> members = new ArrayList<>();
 
+        // Enum constants (if this is an enum)
+        if (type.isEnumDeclaration()) {
+            EnumDeclaration enumDecl = type.asEnumDeclaration();
+            enumDecl.getEntries().forEach(entry -> {
+                members.add(processEnumConstant(entry));
+            });
+        }
+
         // Methods
         type.getMethods().forEach(method -> {
             members.add(processMethod(method));
@@ -248,6 +256,30 @@ public class JavaParserCLI {
                 .map(t -> t.asString())
                 .collect(Collectors.toList());
             member.put("throws", throws_);
+        }
+
+        return member;
+    }
+
+    private static Map<String, Object> processEnumConstant(EnumConstantDeclaration constant) {
+        Map<String, Object> member = new LinkedHashMap<>();
+        member.put("tagname", "enum_constant");
+        member.put("name", constant.getNameAsString());
+
+        // Javadoc
+        if (constant.getJavadocComment().isPresent()) {
+            member.put("comment", constant.getJavadocComment().get().getContent());
+        }
+
+        // Line number
+        member.put("linenr", constant.getBegin().map(pos -> pos.line).orElse(0));
+
+        // Arguments (if any)
+        if (!constant.getArguments().isEmpty()) {
+            List<String> args = constant.getArguments().stream()
+                .map(arg -> arg.toString())
+                .collect(Collectors.toList());
+            member.put("arguments", args);
         }
 
         return member;

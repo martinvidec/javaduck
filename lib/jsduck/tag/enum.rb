@@ -54,12 +54,26 @@ module JsDuck::Tag
 
     # Processes code after it's been detected as enum
     def process_code(code)
-      code || {}
+      if code[:tagname] == :enum
+        code
+      else
+        {:name => code[:name]}
+      end
     end
 
     # Merges doc and code hashes
     def merge(h, docs, code)
-      # Enum-specific merging logic (if needed)
+      # Ensure the empty members array for Java enums
+      h[:members] = [] unless h[:members]
+
+      # If this is a doc-comment enum (@enum tag), set enum metadata
+      if docs[:enum]
+        h[:enum] = docs[:enum]
+        h[:enum][:doc_only] = docs[:enum][:doc_only] || (code[:enum] && code[:enum][:doc_only])
+      elsif code[:tagname] == :enum
+        # For Java enums detected from code, create minimal enum metadata
+        h[:enum] = {:doc_only => false}
+      end
     end
 
     def to_html(cls)
